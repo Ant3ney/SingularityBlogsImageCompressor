@@ -1,0 +1,28 @@
+# Next.js build output
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env*.local
+.vercel/
+.swc/
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+pnpm-error.log*
+
+# Misc
+.DS_Store
+*.seed
+*.pid
+*.pack
+lib-cov
+coverage
+.nyc_output
+.grunt
+build/Release
+
