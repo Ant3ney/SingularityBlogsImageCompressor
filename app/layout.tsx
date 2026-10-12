@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import GoogleAnalytics from "./components/google-analytics";
 
 export const metadata: Metadata = {
   title: "Image Compressor",
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main className="container">{children}</main>
+        <GoogleAnalytics />
       </body>
     </html>
   );
