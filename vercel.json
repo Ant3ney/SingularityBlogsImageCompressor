@@ -1,4 +1,9 @@
 {
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "codex/ga4-image-compressor": false
+    }
+  }
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { getResizeMode, trackCompressionFailure, trackCompressionSuccess } from "../lib/analytics";
 
 type SizeInfo = {
   originalBytes: number;
@@ -53,10 +54,17 @@ export default function HomePage() {
 
     if (!file) {
       setError("Please choose an image file.");
+      trackCompressionFailure({ mimeType: "", inputBytes: 0, resizeMode: getResizeMode(targetWidth, targetHeight) }, "missing_file");
       return;
     }
 
     setIsSubmitting(true);
+    const usage = {
+      mimeType: file.type,
+      inputBytes: file.size,
+      resizeMode: getResizeMode(targetWidth, targetHeight),
+    };
+    let responseStatus: number | null = null;
 
     try {
       const form = new FormData();
@@ -69,6 +77,7 @@ export default function HomePage() {
         method: "POST",
         body: form,
       });
+      responseStatus = res.status;
 
       if (!res.ok) {
         const text = await res.text();
@@ -103,9 +112,11 @@ export default function HomePage() {
       document.body.appendChild(a);
       a.click();
       a.remove();
+      trackCompressionSuccess(usage, blob.size);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Unknown error";
       setError(message);
+      trackCompressionFailure(usage, responseStatus);
     } finally {
       setIsSubmitting(false);
     }
